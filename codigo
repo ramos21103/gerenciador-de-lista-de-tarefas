@@ -1,13 +1,23 @@
 def adicionar_tarefa(lista, tarefa):
+    tarefa['status'] = 'pendente'
     lista.append(tarefa)
-    print(f"Sucesso '{tarefa}' foi adicionada.") 
+    print(f"Sucesso: '{tarefa['tarefa']}' foi adicionada.") 
 
 def remover_tarefa(lista, tarefa):
-    if tarefa in lista:
-        lista.remove(tarefa)
-        print(f"Sucesso '{tarefa}' foi removida.")
-    else:
-        print("Esse item não está na lista.") 
+    for item in lista:
+        if tarefa.lower() == item['tarefa']:
+            lista.remove(item)  
+            print(f"Sucesso: '{tarefa}' foi removida.")
+            return  
+    print("Tarefa não encontrada na lista.")
+        
+def concluir_tarefa(lista, tarefa):
+    for item in lista:
+        if tarefa.lower() == item['tarefa']:
+            item['status'] = 'concluido'
+            print(f"Sucesso: '{item['tarefa']}' foi concluída!")
+            return  
+    print("Tarefa não encontrada na lista.")
       
 def exibir_lista(lista):
     print("\n--- SUAS TAREFAS ---")
@@ -28,26 +38,38 @@ while True:
     print("Bem vindo ao gerenciador do sistema de tarefas")
     print("Digite 1 para adicionar uma tarefa na lista")
     print("Digite 2 para remover uma tarefa da lista")
-    print("Digite 3 para mostrar a lista")
-    print("Digite 4 para sair do gerenciador")
-    escolha = input("Digite de 1 a 4: ")
-
-    if escolha == "1":
-        nova = input("Digite um item para adicionar: ")
-        adicionar_tarefa(minha_lista, nova)
-        input("\nPressione ENTER para continuar...") 
+    print("Digite 3 concluir uma tarefa da lista")
+    print("Digite 4 para ver a lista")
+    print("Digite 5 para sair do gerenciador")
+    try:
+        escolha = int(input("Digite de 1 a 5: "))
+    except ValueError:
+        print("Digite apenas numeros")
+        input("\nPressione ENTER para tentar novamente...")
+    else:    
         
-    elif escolha == "2":
-        remove = input("Digite um item para remover: ")
-        remover_tarefa(minha_lista, remove)
-        input("\nPressione ENTER para continuar...") 
+        if escolha == 1 :
+            nova_tarefa = {}
+            nova_tarefa['tarefa'] = input("Digite uma tarefa para adicionar: ").lower()
+            adicionar_tarefa(minha_lista, nova_tarefa)
+            input("\nPressione ENTER para continuar...") 
         
-    elif escolha == "3":
-        limpar_tela() 
-        exibir_lista(minha_lista) 
-        input("Pressione ENTER para voltar ao menu...")
+        elif escolha == 2 :
+            remove = input("Digite um item para remover: ")
+            remover_tarefa(minha_lista, remove)
+            input("\nPressione ENTER para continuar...")
+             
+        elif escolha == 3:
+            concluir = input("Digite um item para concluir: ")
+            concluir_tarefa(minha_lista, concluir)
+            input("\nPressione ENTER para continuar...")
+                    
+        elif escolha == 4:
+            limpar_tela() 
+            exibir_lista(minha_lista) 
+            input("Pressione ENTER para voltar ao menu...")
         
-    elif escolha == "4":
-        limpar_tela()
-        print("Saindo do sistema. Até logo!")
-        break
+        elif escolha == 5:
+            limpar_tela()
+            print("Saindo do sistema. Até logo!")
+            break
